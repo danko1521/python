@@ -10,8 +10,8 @@ class Man:
         self.house = None
 
     def __str__(self):
-        return 'Я - {}, сытость {}, еды осталось {}, денег осталось {}'.format(
-            self.name, self.fullness, self.food, self.money)
+        return 'Я - {}, сытость {}'.format(
+            self.name, self.fullness)
 
     def eat(self):
         if self.house.food >= 10:
@@ -26,8 +26,8 @@ class Man:
         self.house.money += 50
         self.fullness -= 20
 
-    def play_dota(self):
-        cprint('{} играл в доту целый день'.format(self.name), color='cyan')
+    def watch_TV(self):
+        cprint('{} смотрел MTV весь день'.format(self.name), color='cyan')
         self.fullness -= 10
 
     def shopping(self):
@@ -38,7 +38,7 @@ class Man:
         else:
             cprint('{} денег нет еды нет!'.format(self.name), color='magenta')
 
-    def go_into_house(self,house):
+    def go_to_the_house(self, house):
         self.house = house
         self.fullness -=10
         cprint('{} вьехал в дом!!!'.format(self.name), color='red')
@@ -50,15 +50,15 @@ class Man:
         if self.fullness <= 20:
             self.eat()
         elif self.house.food <= 10:
-            self.shopping()
+           self.shopping()
         elif self.house.money < 50:
-            self.work()
+           self.work()
         elif dice == 1:
             self.work()
         elif dice == 2:
             self.eat()
         else:
-            self.play_dota()
+            self.watch_TV()
 
 class House:
 
@@ -66,12 +66,30 @@ class House:
         self.food = 10
         self.money = 50
 
+    def __str__(self):
+        return 'В доме еды осталось {}, денег осталось {}'.format(
+            self.food, self.money)
+
+citizens = [
+    Man(name='Бивис'),
+    Man(name='Батхед'),
+    Man(name='Кенни')
+]
 
 beavis = Man(name='Бивис')
 butthead = Man(name='Батхед')
+
+my_sweet_home = House()
+for citizen in citizens:
+    citizen.go_to_the_house(house=my_sweet_home)
+
+
 for day in range(1, 366):
     print('=============== день {} ==============='.format(day))
-    beavis.act()
-    butthead.act()
-    print(butthead)
-    print(beavis)
+
+    for citizen in citizens:
+        citizen.act()
+    print('--------------------- в конце дня ---------------------')
+    for citizen in citizens:
+        print(citizen)
+    print(my_sweet_home)
